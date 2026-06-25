@@ -1,0 +1,26 @@
+name: 週新品圖片健康檢查
+
+on:
+  # 讓妳隨時可以手動點擊按鈕執行檢查
+  workflow_dispatch:
+  # 設定每週一到週五早上 9 點自動跑一次（符合採購上班對進度）
+  schedule:
+    - cron: '0 1 * * 1-5'
+
+jobs:
+  check-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 複製專案代碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python 環境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 安裝網頁工具箱
+        run: pip install requests
+
+      - name: 執行照片漏圖檢查
+        run: python check_images.py
